@@ -20,6 +20,7 @@ import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
+import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -44,7 +45,7 @@ public class MainFragment extends BrowseFragment
     private static final int GRID_ITEM_WIDTH = 200;
     private static final int GRID_ITEM_HEIGHT = 200;
     private static final int NUM_ROWS = 6;
-    private static final int NUM_COLS = 1;
+    private static final int NUM_COLS = 0;
 
     private final Handler mHandler = new Handler();
     private ArrayObjectAdapter mRowsAdapter;
@@ -85,16 +86,13 @@ public class MainFragment extends BrowseFragment
         List<Movie> list = MovieList.setupMovies();
 
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        CardPresenter cardPresenter = new CardPresenter();
+        IconHeaderItemPresenter cardPresenter = new IconHeaderItemPresenter();
 
         for (int i = 0; i < NUM_ROWS; i++)
         {
             ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-            for (int j = 0; j < NUM_COLS; j++)
-            {
-                listRowAdapter.add(list.get(j % 5));
-            }
-            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
+            //listRowAdapter.add(list.get(j % 5));
+            PictureHeaderItem header = new PictureHeaderItem(i, "");
             mRowsAdapter.add(new ListRow(header, listRowAdapter));
         }
 
@@ -110,7 +108,6 @@ public class MainFragment extends BrowseFragment
 
     private void prepareBackgroundManager()
     {
-
         mBackgroundManager = BackgroundManager.getInstance(getActivity());
         mBackgroundManager.attach(getActivity().getWindow());
         mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
@@ -125,6 +122,12 @@ public class MainFragment extends BrowseFragment
 
         // set fastLane (or headers) background color
         setBrandColor(getResources().getColor(R.color.fastlane_background));
+        setHeaderPresenterSelector(new PresenterSelector() {
+            @Override
+            public Presenter getPresenter(Object o) {
+                return new IconHeaderItemPresenter();
+            }
+        });
     }
 
     private void setupEventListeners()
