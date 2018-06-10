@@ -29,8 +29,7 @@ public class Movie implements Serializable
     private long id;
     private String title;
     private String description;
-    private String bgImageUrl;
-    private String cardImageUrl;
+    private int bgImageUrl;
     private String videoUrl;
     private String studio;
     private String category;
@@ -89,24 +88,14 @@ public class Movie implements Serializable
         this.videoUrl = videoUrl;
     }
 
-    public String getBackgroundImageUrl()
+    public int getBackgroundImageUrl()
     {
         return bgImageUrl;
     }
 
-    public void setBackgroundImageUrl(String bgImageUrl)
+    public void setBackgroundImageUrl(int bgImageUrl)
     {
         this.bgImageUrl = bgImageUrl;
-    }
-
-    public String getCardImageUrl()
-    {
-        return cardImageUrl;
-    }
-
-    public void setCardImageUrl(String cardImageUrl)
-    {
-        this.cardImageUrl = cardImageUrl;
     }
 
     public String getCategory()
@@ -128,7 +117,6 @@ public class Movie implements Serializable
                 ", title='" + title + '\'' +
                 ", videoUrl='" + videoUrl + '\'' +
                 ", backgroundImageUrl='" + bgImageUrl + '\'' +
-                ", cardImageUrl='" + cardImageUrl + '\'' +
                 '}';
     }
 }

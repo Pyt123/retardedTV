@@ -67,19 +67,12 @@ public final class MovieList
                 "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole.mp4",
                 "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose.mp4"
         };
-        String bgImageUrl[] = {
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Demo%20Slam/Google%20Demo%20Slam_%2020ft%20Search/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Gmail%20Blue/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose/bg.jpg",
-        };
-        String cardImageUrl[] = {
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Demo%20Slam/Google%20Demo%20Slam_%2020ft%20Search/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Gmail%20Blue/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose/card.jpg"
+        int bgImageUrl[] = {
+                R.drawable.stock1,
+                R.drawable.stock2,
+                R.drawable.stock3,
+                R.drawable.stock4,
+                R.drawable.stock5
         };
 
         for (int index = 0; index < title.length; ++index)
@@ -91,7 +84,6 @@ public final class MovieList
                             description,
                             studio[index],
                             videoUrl[index],
-                            cardImageUrl[index],
                             bgImageUrl[index]));
         }
 
@@ -99,8 +91,7 @@ public final class MovieList
     }
 
     private static Movie buildMovieInfo(String category, String title,
-                                        String description, String studio, String videoUrl, String cardImageUrl,
-                                        String backgroundImageUrl)
+                                        String description, String studio, String videoUrl, int backgroundImageUrl)
     {
         Movie movie = new Movie();
         movie.setId(count++);
@@ -108,7 +99,6 @@ public final class MovieList
         movie.setDescription(description);
         movie.setStudio(studio);
         movie.setCategory(category);
-        movie.setCardImageUrl(cardImageUrl);
         movie.setBackgroundImageUrl(backgroundImageUrl);
         movie.setVideoUrl(videoUrl);
         return movie;
