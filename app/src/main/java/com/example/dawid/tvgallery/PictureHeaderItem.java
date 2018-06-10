@@ -4,16 +4,16 @@ import android.support.v17.leanback.widget.HeaderItem;
 
 public class PictureHeaderItem extends HeaderItem
 {
-    private int pictureId;
+    private Picture picture;
 
-    public PictureHeaderItem(long id, String name, int pictureId)
+    public PictureHeaderItem(long id, String name, Picture picture)
     {
         super(id, name);
-        this.pictureId = pictureId;
+        this.picture = picture;
     }
 
-    public int getPictureId()
+    public Picture getPicture()
     {
-        return pictureId;
+        return picture;
     }
 }
