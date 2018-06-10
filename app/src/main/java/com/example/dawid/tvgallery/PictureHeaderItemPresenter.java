@@ -13,6 +13,12 @@ import android.widget.ImageView;
 public class PictureHeaderItemPresenter extends RowHeaderPresenter
 {
     //private float mUnselectedAlpha;
+    private MainFragment mainFragment;
+
+    public PictureHeaderItemPresenter(MainFragment mainFragment)
+    {
+        this.mainFragment = mainFragment;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup)
@@ -23,19 +29,28 @@ public class PictureHeaderItemPresenter extends RowHeaderPresenter
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.pic_header_item, null);
-
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object o)
     {
-        PictureHeaderItem iconHeaderItem = (PictureHeaderItem) ((ListRow) o).getHeaderItem();
+        final PictureHeaderItem iconHeaderItem = (PictureHeaderItem) ((ListRow) o).getHeaderItem();
         View rootView = viewHolder.view;
 
         ImageView iconView = rootView.findViewById(R.id.header_icon);
         int iconResId = iconHeaderItem.getPictureId();
         iconView.setImageDrawable(rootView.getResources().getDrawable(iconResId, null));
+       /* viewHolder.view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                mainFragment.updateBackground(iconHeaderItem.getPictureId());
+            }
+        });*/
     }
 
     @Override

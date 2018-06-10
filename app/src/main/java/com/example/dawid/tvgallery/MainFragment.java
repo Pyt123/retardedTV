@@ -39,7 +39,7 @@ public class MainFragment extends BrowseFragment
 {
     private static final String TAG = "MainFragment";
 
-    private static final int BACKGROUND_UPDATE_DELAY = 300;
+    private static final int BACKGROUND_UPDATE_DELAY = 100;
     private static final int GRID_ITEM_WIDTH = 200;
     private static final int GRID_ITEM_HEIGHT = 200;
 
@@ -82,7 +82,7 @@ public class MainFragment extends BrowseFragment
         List<Movie> list = MovieList.setupMovies();
 
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        PictureHeaderItemPresenter cardPresenter = new PictureHeaderItemPresenter();
+        PictureHeaderItemPresenter cardPresenter = new PictureHeaderItemPresenter(this);
 
         for (int i = 0; i < list.size(); i++)
         {
@@ -93,11 +93,11 @@ public class MainFragment extends BrowseFragment
         }
 
 
-        GridItemPresenter mGridPresenter = new GridItemPresenter();
-        ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
-        gridRowAdapter.add(getResources().getString(R.string.grid_view));
-        gridRowAdapter.add(getString(R.string.error_fragment));
-        gridRowAdapter.add(getResources().getString(R.string.personal_settings));
+        //GridItemPresenter mGridPresenter = new GridItemPresenter();
+        //ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
+        //gridRowAdapter.add(getResources().getString(R.string.grid_view));
+        //gridRowAdapter.add(getString(R.string.error_fragment));
+        //gridRowAdapter.add(getResources().getString(R.string.personal_settings));
 
         setAdapter(mRowsAdapter);
     }
@@ -115,13 +115,13 @@ public class MainFragment extends BrowseFragment
     {
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
-
         // set fastLane (or headers) background color
         setBrandColor(getResources().getColor(R.color.fastlane_background));
+        final MainFragment mainFragment = this;
         setHeaderPresenterSelector(new PresenterSelector() {
             @Override
             public Presenter getPresenter(Object o) {
-                return new PictureHeaderItemPresenter();
+                return new PictureHeaderItemPresenter(mainFragment);
             }
         });
     }
@@ -138,8 +138,6 @@ public class MainFragment extends BrowseFragment
         int height = mMetrics.heightPixels;
         Glide.with(getActivity())
                 .load(uri)
-                .centerCrop()
-                .error(mDefaultBackground)
                 .into(new SimpleTarget<GlideDrawable>(width, height)
                 {
                     @Override
@@ -168,32 +166,6 @@ public class MainFragment extends BrowseFragment
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row)
         {
-            if (item instanceof Movie)
-            {
-                Movie movie = (Movie) item;
-                Log.d(TAG, "Item: " + item.toString());
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putExtra(DetailsActivity.MOVIE, movie);
-
-                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        getActivity(),
-                        ((ImageCardView) itemViewHolder.view).getMainImageView(),
-                        DetailsActivity.SHARED_ELEMENT_NAME).toBundle();
-                getActivity().startActivity(intent, bundle);
-            }
-            else if (item instanceof String)
-            {
-                if (((String) item).contains(getString(R.string.error_fragment)))
-                {
-                    Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
-                    startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
         }
     }
 
@@ -215,7 +187,6 @@ public class MainFragment extends BrowseFragment
 
     private class UpdateBackgroundTask extends TimerTask
     {
-
         @Override
         public void run()
         {
@@ -230,7 +201,7 @@ public class MainFragment extends BrowseFragment
         }
     }
 
-    private class GridItemPresenter extends Presenter
+    /*private class GridItemPresenter extends Presenter
     {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent)
@@ -248,12 +219,11 @@ public class MainFragment extends BrowseFragment
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, Object item)
         {
-            ((TextView) viewHolder.view).setText((String) item);
         }
 
         @Override
         public void onUnbindViewHolder(ViewHolder viewHolder)
         {
         }
-    }
+    }*/
 }
