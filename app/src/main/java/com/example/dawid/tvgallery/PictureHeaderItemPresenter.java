@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
 public class PictureHeaderItemPresenter extends RowHeaderPresenter
 {
     @Override
@@ -27,11 +26,11 @@ public class PictureHeaderItemPresenter extends RowHeaderPresenter
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object o)
     {
-        PictureHeaderItem iconHeaderItem = (PictureHeaderItem) ((ListRow) o).getHeaderItem();
+        PictureHeaderItem picHeaderItem = (PictureHeaderItem) ((ListRow) o).getHeaderItem();
         View rootView = viewHolder.view;
 
-        ImageView iconView = rootView.findViewById(R.id.header_pic);
-        int iconResId = iconHeaderItem.getPicture().getImageId();
-        iconView.setImageDrawable(rootView.getResources().getDrawable(iconResId, null));
+        ImageView picView = rootView.findViewById(R.id.header_pic);
+        int iconResId = picHeaderItem.getPicture().getImageId();
+        picView.setImageDrawable(rootView.getResources().getDrawable(iconResId, null));
     }
 }
