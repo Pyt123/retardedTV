@@ -26,11 +26,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 public class MainFragment extends BrowseFragment
 {
-    private static final int BACKGROUND_UPDATE_DELAY = 5;
-    private final Handler mHandler = new Handler();
     private DisplayMetrics mMetrics;
-    private Timer mBackgroundTimer;
-    private int mBackgroundUri;
     private BackgroundManager mBackgroundManager;
 
     @Override
@@ -51,10 +47,6 @@ public class MainFragment extends BrowseFragment
     public void onDestroy()
     {
         super.onDestroy();
-        if (null != mBackgroundTimer)
-        {
-            mBackgroundTimer.cancel();
-        }
     }
 
     private void loadRows()
@@ -101,13 +93,11 @@ public class MainFragment extends BrowseFragment
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
     }
 
-    protected void updateBackground(int uri)
+    protected void updateBackground(int picId)
     {
-        int width = mMetrics.widthPixels;
-        int height = mMetrics.heightPixels;
         Glide.with(getActivity())
-                .load(uri)
-                .into(new SimpleTarget<GlideDrawable>(width, height)
+                .load(picId)
+                .into(new SimpleTarget<GlideDrawable>(mMetrics.widthPixels, mMetrics.heightPixels)
                 {
                     @Override
                     public void onResourceReady(GlideDrawable resource,
@@ -116,17 +106,6 @@ public class MainFragment extends BrowseFragment
                         mBackgroundManager.setDrawable(resource);
                     }
                 });
-        mBackgroundTimer.cancel();
-    }
-
-    private void startBackgroundTimer()
-    {
-        if (null != mBackgroundTimer)
-        {
-            mBackgroundTimer.cancel();
-        }
-        mBackgroundTimer = new Timer();
-        mBackgroundTimer.schedule(new UpdateBackgroundTask(), BACKGROUND_UPDATE_DELAY);
     }
 
     /*private final class ItemViewClickedListener implements OnItemViewClickedListener
@@ -148,25 +127,8 @@ public class MainFragment extends BrowseFragment
             if (headerItem instanceof PictureHeaderItem)
             {
                 PictureHeaderItem pictureHeaderItem = (PictureHeaderItem) headerItem;
-                mBackgroundUri = pictureHeaderItem.getPicture().getImageId();
-                startBackgroundTimer();
+                updateBackground(pictureHeaderItem.getPicture().getImageId());
             }
-        }
-    }
-
-    private class UpdateBackgroundTask extends TimerTask
-    {
-        @Override
-        public void run()
-        {
-            mHandler.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    updateBackground(mBackgroundUri);
-                }
-            });
         }
     }
 }
