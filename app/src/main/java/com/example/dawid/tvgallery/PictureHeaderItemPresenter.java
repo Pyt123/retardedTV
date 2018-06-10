@@ -40,7 +40,7 @@ public class PictureHeaderItemPresenter extends RowHeaderPresenter
         final PictureHeaderItem iconHeaderItem = (PictureHeaderItem) ((ListRow) o).getHeaderItem();
         View rootView = viewHolder.view;
 
-        ImageView iconView = rootView.findViewById(R.id.header_icon);
+        ImageView iconView = rootView.findViewById(R.id.header_pic);
         int iconResId = iconHeaderItem.getPictureId();
         iconView.setImageDrawable(rootView.getResources().getDrawable(iconResId, null));
        /* viewHolder.view.setOnClickListener(new View.OnClickListener()

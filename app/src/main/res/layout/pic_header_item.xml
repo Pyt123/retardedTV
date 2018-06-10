@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/header_icon"
+        android:id="@+id/header_pic"
         android:layout_width="160dp"
         android:layout_height="100dp"
         android:src="@drawable/stock1" />
