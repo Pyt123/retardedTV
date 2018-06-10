@@ -37,12 +37,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 public class MainFragment extends BrowseFragment
 {
-    private static final String TAG = "MainFragment";
-
     private static final int BACKGROUND_UPDATE_DELAY = 100;
-    private static final int GRID_ITEM_WIDTH = 200;
-    private static final int GRID_ITEM_HEIGHT = 200;
-
     private final Handler mHandler = new Handler();
     private ArrayObjectAdapter mRowsAdapter;
     private Drawable mDefaultBackground;
@@ -54,7 +49,6 @@ public class MainFragment extends BrowseFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
-        Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
         prepareBackgroundManager();
@@ -72,7 +66,6 @@ public class MainFragment extends BrowseFragment
         super.onDestroy();
         if (null != mBackgroundTimer)
         {
-            Log.d(TAG, "onDestroy: " + mBackgroundTimer.toString());
             mBackgroundTimer.cancel();
         }
     }
@@ -82,22 +75,14 @@ public class MainFragment extends BrowseFragment
         List<Movie> list = MovieList.setupMovies();
 
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        PictureHeaderItemPresenter cardPresenter = new PictureHeaderItemPresenter(this);
+        PictureHeaderItemPresenter cardPresenter = new PictureHeaderItemPresenter();
 
         for (int i = 0; i < list.size(); i++)
         {
             ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-            //listRowAdapter.add(list.get(j % 5));
             PictureHeaderItem header = new PictureHeaderItem(i, "", list.get(i).getBackgroundImageUrl());
             mRowsAdapter.add(new ListRow(header, listRowAdapter));
         }
-
-
-        //GridItemPresenter mGridPresenter = new GridItemPresenter();
-        //ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
-        //gridRowAdapter.add(getResources().getString(R.string.grid_view));
-        //gridRowAdapter.add(getString(R.string.error_fragment));
-        //gridRowAdapter.add(getResources().getString(R.string.personal_settings));
 
         setAdapter(mRowsAdapter);
     }
@@ -115,13 +100,11 @@ public class MainFragment extends BrowseFragment
     {
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
-        // set fastLane (or headers) background color
         setBrandColor(getResources().getColor(R.color.fastlane_background));
-        final MainFragment mainFragment = this;
         setHeaderPresenterSelector(new PresenterSelector() {
             @Override
             public Presenter getPresenter(Object o) {
-                return new PictureHeaderItemPresenter(mainFragment);
+                return new PictureHeaderItemPresenter();
             }
         });
     }
@@ -200,30 +183,4 @@ public class MainFragment extends BrowseFragment
             });
         }
     }
-
-    /*private class GridItemPresenter extends Presenter
-    {
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent)
-        {
-            TextView view = new TextView(parent.getContext());
-            view.setLayoutParams(new ViewGroup.LayoutParams(GRID_ITEM_WIDTH, GRID_ITEM_HEIGHT));
-            view.setFocusable(true);
-            view.setFocusableInTouchMode(true);
-            view.setBackgroundColor(getResources().getColor(R.color.default_background));
-            view.setTextColor(Color.WHITE);
-            view.setGravity(Gravity.CENTER);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder viewHolder, Object item)
-        {
-        }
-
-        @Override
-        public void onUnbindViewHolder(ViewHolder viewHolder)
-        {
-        }
-    }*/
 }
