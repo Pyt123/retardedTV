@@ -1,6 +1,5 @@
 package com.example.dawid.tvgallery;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,7 +26,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +82,7 @@ public class MainFragment extends BrowseFragment
         List<Movie> list = MovieList.setupMovies();
 
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        IconHeaderItemPresenter cardPresenter = new IconHeaderItemPresenter();
+        PictureHeaderItemPresenter cardPresenter = new PictureHeaderItemPresenter();
 
         for (int i = 0; i < list.size(); i++)
         {
@@ -123,7 +121,7 @@ public class MainFragment extends BrowseFragment
         setHeaderPresenterSelector(new PresenterSelector() {
             @Override
             public Presenter getPresenter(Object o) {
-                return new IconHeaderItemPresenter();
+                return new PictureHeaderItemPresenter();
             }
         });
     }
@@ -170,7 +168,6 @@ public class MainFragment extends BrowseFragment
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row)
         {
-
             if (item instanceof Movie)
             {
                 Movie movie = (Movie) item;
@@ -183,13 +180,15 @@ public class MainFragment extends BrowseFragment
                         ((ImageCardView) itemViewHolder.view).getMainImageView(),
                         DetailsActivity.SHARED_ELEMENT_NAME).toBundle();
                 getActivity().startActivity(intent, bundle);
-            } else if (item instanceof String)
+            }
+            else if (item instanceof String)
             {
                 if (((String) item).contains(getString(R.string.error_fragment)))
                 {
                     Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
                     startActivity(intent);
-                } else
+                }
+                else
                 {
                     Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT)
                             .show();
@@ -204,9 +203,11 @@ public class MainFragment extends BrowseFragment
         public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
                                    RowPresenter.ViewHolder rowViewHolder, Row row)
         {
-            if (item instanceof Movie)
+            HeaderItem headerItem = row.getHeaderItem();
+            if (headerItem instanceof PictureHeaderItem)
             {
-                mBackgroundUri = ((Movie) item).getBackgroundImageUrl();
+                PictureHeaderItem pictureHeaderItem = (PictureHeaderItem) headerItem;
+                mBackgroundUri = pictureHeaderItem.getPictureId();
                 startBackgroundTimer();
             }
         }
@@ -255,5 +256,4 @@ public class MainFragment extends BrowseFragment
         {
         }
     }
-
 }
